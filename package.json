@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.2.1",
     "fs": "0.0.1-security",
+    "heroku-cli": "^7.0.9",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.15",
     "nodemailer": "^6.5.0",
