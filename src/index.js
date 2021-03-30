@@ -18,7 +18,7 @@ app.use('/files',express.static(path.resolve(__dirname,'..','tmp','upload')))
 require('./app/controllers/index')(app);
 
 //app.listen(process.env.port || 3000);
-//app.listen(process.env.PORT || 5000);
+app.listen(process.env.PORT || 5000);
 
  
 
