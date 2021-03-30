@@ -23,7 +23,7 @@ router.post('/register', async (req,res) => {
       if(await User.findOne({email}))
         return res.status(400).send({error: 'User already exists'});
       
-
+console.log()
       const user = await User.create(req.body);
 
       user.password = undefined;
@@ -131,6 +131,22 @@ router.post('/reset_password', async (req,res) => {
   }
  
  });
+
+
+router.get('/List', async (req,res) => {
+  
+  try{
+    const users = await User.find()
+  
+  return res.send({ users });
+
+  }catch (err){
+    res.status(400).send({ error: 'Erro get Users, try again' });
+  }
+  
+});
+
+
 
 
 module.exports = app => app.use('/auth',router);
