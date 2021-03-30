@@ -3,31 +3,55 @@ const multer = require('multer');
 
 const multerMiddleware =  require('../middlewares/multer');
 
+const uploadImage = require('../models/uploadImage');
+
 const router = express.Router();
 
-router.post('/posts',  multer(multerMiddleware).single('file'), (req, res) =>{
-
+router.get('/List', async(req,res) =>{
     try{
-          console.log(req.file);
-
-          return res.json({hello: "teste"});
+        const image = await uploadImage.find();
+    
+    return res.json(image);
     }
     catch(err){
-        return res.status(400).send({ error: 'Erro loading project' });
+        return res.status(400).send({ error: 'Erro receiving image list' });
+    }
+    
+
+});
+
+router.post('/post',  multer(multerMiddleware).single('file'), async(req, res) =>{
+
+    const {originalname:name,size, key, location: url = ""} = req.file
+    
+    const image = await uploadImage.create({
+        name,
+        size,
+        key,
+        url,
+    });
+    try{
+        return res.json(image);
+    }
+    catch(err){
+        return res.status(400).send({ error: 'Erro upload  image' });
     }
 });
 
-router.post('/',  multer(multerMiddleware).single('file'), (req, res) =>{
-
+router.delete('/:id', async(req,res) =>{
     try{
-          console.log(req.file);
+        const image = await uploadImage.findById(req.params.id);
+        
+        await image.remove();
 
-          return res.json({hello: "teste"});
+        return res.send('ok');
     }
-    catch(err){
-        return res.status(400).send({ error: 'Erro loading project' });
+    catch(err){          
+        return res.status(400).send({ error: 'Erro when trying to remove image' });
     }
+    
+
 });
 
 
-module.exports = app => app.use('/upload',router);
+module.exports = app => app.use('/uploadimage',router);
